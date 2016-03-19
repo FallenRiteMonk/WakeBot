@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">WakeBot</string>
+
+    <string name="send_button">Set Alarm</string>
+    <string name="snooze">Snooze</string>
+    <string name="dismiss">Dismiss</string>
+</resources>
