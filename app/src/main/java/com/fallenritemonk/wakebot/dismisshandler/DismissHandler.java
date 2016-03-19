@@ -26,8 +26,6 @@ import java.util.Calendar;
 public class DismissHandler extends AppCompatActivity {
     private final String LOG_TAG = "DismissHandler";
 
-    public static final String BUNDLE_ALARM_IDENTIFIER = "BUNDLE_ALARM_IDENTIFIER";
-
     private final long SNOOZE_TIME = 5 * 60 * 1000; // 5min
 
     private AlarmAdapter alarmAdapter;

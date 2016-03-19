@@ -7,7 +7,7 @@ import android.os.PowerManager;
  * Created by FallenRiteMonk on 19/03/16.
  */
 public class WakeLocker {
-    public static final String WAKELOCK_TAG = "WAKELOCK_TAG";
+    private static final String WAKELOCK_TAG = "WAKELOCK_TAG";
 
     private static PowerManager.WakeLock wakeLock = null;
 

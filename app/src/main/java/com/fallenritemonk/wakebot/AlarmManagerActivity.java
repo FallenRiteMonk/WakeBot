@@ -15,7 +15,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.TimePicker;
 
 import com.fallenritemonk.wakebot.dismisshandler.DismissTypeEnum;
@@ -26,8 +25,6 @@ import java.util.Calendar;
 
 public class AlarmManagerActivity extends AppCompatActivity {
     private final String LOG_TAG = "AlarmManagerActivity";
-
-    private final static int PERMISSIONS_REQUEST_WAKE_LOCK = 1000;
 
     private AlarmAdapter alarmAdapter;
 
@@ -84,7 +81,7 @@ public class AlarmManagerActivity extends AppCompatActivity {
         int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
         int minute = mcurrentTime.get(Calendar.MINUTE);
         TimePickerDialog mTimePicker;
-        mTimePicker = new TimePickerDialog(this, android.R.style.Theme_DeviceDefault_Dialog_Alert, new TimePickerDialog.OnTimeSetListener() {
+        mTimePicker = new TimePickerDialog(this, android.R.style.Theme_DeviceDefault, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
                 Alarm alarm = new Alarm(selectedHour , selectedMinute, DismissTypeEnum.DEFAULT);

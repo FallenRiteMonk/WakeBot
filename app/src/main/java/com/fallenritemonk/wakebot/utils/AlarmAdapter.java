@@ -26,8 +26,8 @@ import static nl.qbusict.cupboard.CupboardFactory.cupboard;
 public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.AlarmViewHolder> {
     private static AlarmAdapter instance;
 
-    private ArrayList<Alarm> alarmList;
-    private SQLiteDatabase db;
+    private final ArrayList<Alarm> alarmList;
+    private final SQLiteDatabase db;
 
     private AlarmAdapter(Context context) {
         alarmList = new ArrayList<>();
@@ -104,8 +104,8 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.AlarmViewHol
     }
 
     public class AlarmViewHolder extends RecyclerView.ViewHolder {
-        protected View itemView;
-        protected TextView alarmText;
+        final View itemView;
+        final TextView alarmText;
 
         public AlarmViewHolder(View v) {
             super(v);
