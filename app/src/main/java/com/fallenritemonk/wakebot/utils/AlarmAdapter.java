@@ -74,6 +74,10 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.AlarmViewHol
         }
     }
 
+    public long getId(int i) {
+        return alarmList.get(i).get_id();
+    }
+
     public Alarm getAlarm(long l) {
         return cupboard().withDatabase(db).get(Alarm.class, l);
     }

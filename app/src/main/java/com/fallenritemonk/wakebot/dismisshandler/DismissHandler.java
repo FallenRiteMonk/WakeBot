@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 
@@ -38,18 +39,18 @@ public class DismissHandler extends AppCompatActivity {
         setContentView(R.layout.activity_dismiss_handler);
 
         initAlarm();
-        initScreen();
-        initMediaPlayer();
+        if (alarm != null) {
+            initScreen();
+            initMediaPlayer();
+        } else {
+            finish();
+        }
     }
 
     private  void initAlarm() {
         alarmAdapter = AlarmAdapter.getInstance(this);
         long id = getIntent().getLongExtra(AlarmReceiver.ALARM_ID, -1);
         alarm = alarmAdapter.getAlarm(id);
-
-        if (alarm == null) {
-            finish();
-        }
     }
 
     private void initScreen() {

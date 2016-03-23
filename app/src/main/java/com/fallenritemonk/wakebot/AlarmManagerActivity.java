@@ -68,6 +68,14 @@ public class AlarmManagerActivity extends AppCompatActivity {
 
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
+                Alarm alarm = alarmAdapter.getAlarm(alarmAdapter.getId(viewHolder.getAdapterPosition()));
+                Intent alarmIntent = new Intent(getApplicationContext(), AlarmReceiver.class);
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), (int) alarm.get_id(), alarmIntent, 0);
+
+                AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                manager.cancel(pendingIntent);
+                pendingIntent.cancel();
+
                 alarmAdapter.removeAlarm(viewHolder.getAdapterPosition());
             }
         };
@@ -87,9 +95,9 @@ public class AlarmManagerActivity extends AppCompatActivity {
                 Alarm alarm = new Alarm(selectedHour , selectedMinute, DismissTypeEnum.DEFAULT);
                 alarmAdapter.addAlarm(alarm);
 
-                Intent alarmIntent = new Intent(AlarmManagerActivity.this, AlarmReceiver.class);
+                Intent alarmIntent = new Intent(getApplicationContext(), AlarmReceiver.class);
                 alarmIntent.putExtra(AlarmReceiver.ALARM_ID, alarm.get_id());
-                PendingIntent pendingIntent = PendingIntent.getBroadcast(AlarmManagerActivity.this, (int) alarm.get_id(), alarmIntent, PendingIntent.FLAG_ONE_SHOT);
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), (int) alarm.get_id(), alarmIntent, 0);
 
                 AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
