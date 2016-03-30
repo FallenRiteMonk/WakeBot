@@ -3,4 +3,27 @@
 
     <string name="snooze">Snooze</string>
     <string name="dismiss">Dismiss</string>
+    <string name="time">Time</string>
+    <string name="repeat">Repeat</string>
+    <string name="no_repeat">No Repeat</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="delete">Delete</string>
+    <string name="save">Save</string>
+
+    <string name="short_sunday">Su</string>
+    <string name="short_monday">Mo</string>
+    <string name="short_tuesday">Tu</string>
+    <string name="short_wednesday">We</string>
+    <string name="short_thursday">Th</string>
+    <string name="short_friday">Fr</string>
+    <string name="short_saturday">Sa</string>
+
+    <string name="sunday">Sunday</string>
+    <string name="monday">Monday</string>
+    <string name="tuesday">Tuesday</string>
+    <string name="wednesday">Wednesday</string>
+    <string name="thursday">Thursday</string>
+    <string name="friday">Friday</string>
+    <string name="saturday">Saturday</string>
 </resources>

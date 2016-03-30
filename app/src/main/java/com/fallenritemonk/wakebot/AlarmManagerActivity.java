@@ -1,30 +1,21 @@
 package com.fallenritemonk.wakebot;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.app.TimePickerDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.View;
-import android.widget.TimePicker;
 
-import com.fallenritemonk.wakebot.dismisshandler.DismissTypeEnum;
 import com.fallenritemonk.wakebot.utils.AlarmAdapter;
-import com.fallenritemonk.wakebot.utils.AlarmReceiver;
-
-import java.util.Calendar;
 
 public class AlarmManagerActivity extends AppCompatActivity {
     private final String LOG_TAG = "AlarmManagerActivity";
+    private static final int EDIT_ALARM_REQUEST = 1;
 
     private AlarmAdapter alarmAdapter;
 
@@ -60,55 +51,25 @@ public class AlarmManagerActivity extends AppCompatActivity {
         alarmAdapter.loadAlarms();
         mRecyclerView.setAdapter(alarmAdapter);
 
-        ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+        alarmAdapter.setOnItemClickListener(new AlarmAdapter.OnItemClickListener() {
             @Override
-            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-                return false;
+            public void onItemClick(View itemView, int position) {
+                Intent intent = new Intent(getApplicationContext(), EditAlarmActivity.class);
+                intent.putExtra(EditAlarmActivity.PASSED_ALARM_ID, alarmAdapter.getId(position));
+                startActivityForResult(intent, EDIT_ALARM_REQUEST);
             }
-
-            @Override
-            public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
-                Alarm alarm = alarmAdapter.getAlarm(alarmAdapter.getId(viewHolder.getAdapterPosition()));
-                Intent alarmIntent = new Intent(getApplicationContext(), AlarmReceiver.class);
-                PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), (int) alarm.get_id(), alarmIntent, 0);
-
-                AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-                manager.cancel(pendingIntent);
-                pendingIntent.cancel();
-
-                alarmAdapter.removeAlarm(viewHolder.getAdapterPosition());
-            }
-        };
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
-        itemTouchHelper.attachToRecyclerView(mRecyclerView);
+        });
     }
 
     private void newAlarm() {
-        Calendar mcurrentTime = Calendar.getInstance();
-        mcurrentTime.add(Calendar.MINUTE, 1);
-        int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
-        int minute = mcurrentTime.get(Calendar.MINUTE);
-        TimePickerDialog mTimePicker;
-        mTimePicker = new TimePickerDialog(this, android.R.style.Theme_DeviceDefault, new TimePickerDialog.OnTimeSetListener() {
-            @Override
-            public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                Alarm alarm = new Alarm(selectedHour , selectedMinute, DismissTypeEnum.DEFAULT);
-                alarmAdapter.addAlarm(alarm);
+        Intent intent = new Intent(this, EditAlarmActivity.class);
+        startActivityForResult(intent, EDIT_ALARM_REQUEST);
+    }
 
-                Intent alarmIntent = new Intent(getApplicationContext(), AlarmReceiver.class);
-                alarmIntent.putExtra(AlarmReceiver.ALARM_ID, alarm.get_id());
-                PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), (int) alarm.get_id(), alarmIntent, 0);
-
-                AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    manager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, alarm.getNextAlarmTime(), pendingIntent);
-                } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                    manager.setExact(AlarmManager.RTC_WAKEUP, alarm.getNextAlarmTime(), pendingIntent);
-                } else {
-                    manager.set(AlarmManager.RTC_WAKEUP, alarm.getNextAlarmTime(), pendingIntent);
-                }
-            }
-        }, hour, minute, true);
-        mTimePicker.show();
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == EDIT_ALARM_REQUEST) {
+            alarmAdapter.notifyDataSetChanged();
+        }
     }
 }

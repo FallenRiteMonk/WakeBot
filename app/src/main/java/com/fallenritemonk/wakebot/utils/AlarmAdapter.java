@@ -24,14 +24,27 @@ import static nl.qbusict.cupboard.CupboardFactory.cupboard;
  * Created by FallenRiteMonk on 18/03/16.
  */
 public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.AlarmViewHolder> {
+    private final String LOG_TAG = "AlarmAdapter";
+
     private static AlarmAdapter instance;
 
+    private final Context context;
     private final ArrayList<Alarm> alarmList;
     private final SQLiteDatabase db;
+
+    private static OnItemClickListener listener;
+    public interface OnItemClickListener {
+        void onItemClick(View itemView, int position);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
+    }
 
     private AlarmAdapter(Context context) {
         alarmList = new ArrayList<>();
 
+        this.context = context;
         DatabaseHelper dbHelper = new DatabaseHelper(context);
         db = dbHelper.getWritableDatabase();
     }
@@ -53,16 +66,18 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.AlarmViewHol
 
     public void updateAlarm(Alarm alarm) {
         cupboard().withDatabase(db).put(alarm);
+        loadAlarms();
         notifyDataSetChanged();
     }
 
-    public void removeAlarm(int i) {
-        cupboard().withDatabase(db).delete(alarmList.get(i));
-        alarmList.remove(i);
+    public void removeAlarm(long id) {
+        cupboard().withDatabase(db).delete(Alarm.class, id);
+        loadAlarms();
         notifyDataSetChanged();
     }
 
     public void loadAlarms() {
+        alarmList.clear();
         Cursor alarms = cupboard().withDatabase(db).query(Alarm.class).getCursor();
         try {
             QueryResultIterable<Alarm> itr = cupboard().withCursor(alarms).iterate(Alarm.class);
@@ -91,6 +106,8 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.AlarmViewHol
     public void onBindViewHolder(AlarmViewHolder contactViewHolder, int i) {
         Alarm alarm = alarmList.get(i);
         contactViewHolder.alarmText.setText(alarm.getReadableTime());
+        contactViewHolder.repeatDayText.setText(alarm.getRepeatDayString(context));
+
         if (!alarm.isActive()) {
             contactViewHolder.itemView.setBackgroundColor(Color.GRAY);
         } else {
@@ -110,11 +127,21 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.AlarmViewHol
     public class AlarmViewHolder extends RecyclerView.ViewHolder {
         final View itemView;
         final TextView alarmText;
+        final TextView repeatDayText;
 
         public AlarmViewHolder(View v) {
             super(v);
             itemView = v;
             alarmText =  (TextView) v.findViewById(R.id.alarm_time_view);
+            repeatDayText = (TextView) v.findViewById(R.id.repeat_day_view);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (listener != null)
+                        listener.onItemClick(itemView, getLayoutPosition());
+                }
+            });
         }
     }
 }
