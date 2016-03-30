@@ -108,6 +108,7 @@ public class DismissHandler extends AppCompatActivity {
 
     public void dismiss() {
         stopMeadiaPlayer();
+        // TODO: Check for repeat
         alarm.deactivate();
         alarmAdapter.updateAlarm(alarm);
         finish();
