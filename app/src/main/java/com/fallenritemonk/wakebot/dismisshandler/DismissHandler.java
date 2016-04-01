@@ -88,18 +88,7 @@ public class DismissHandler extends AppCompatActivity {
 
     public void click(View view) {
         if (view.getId() == R.id.snooze_button) {
-            Intent alarmIntent = new Intent(this, AlarmReceiver.class);
-            alarmIntent.putExtra(AlarmReceiver.ALARM_ID, alarm.get_id());
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(this, (int) alarm.get_id(), alarmIntent, PendingIntent.FLAG_ONE_SHOT);
-
-            AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                manager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, Calendar.getInstance().getTimeInMillis() + SNOOZE_TIME, pendingIntent);
-            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                manager.setExact(AlarmManager.RTC_WAKEUP, Calendar.getInstance().getTimeInMillis() + SNOOZE_TIME, pendingIntent);
-            } else {
-                manager.set(AlarmManager.RTC_WAKEUP, Calendar.getInstance().getTimeInMillis() + SNOOZE_TIME, pendingIntent);
-            }
+            setAlarm(Calendar.getInstance().getTimeInMillis() + SNOOZE_TIME);
 
             stopMeadiaPlayer();
             finish();
@@ -108,15 +97,35 @@ public class DismissHandler extends AppCompatActivity {
 
     public void dismiss() {
         stopMeadiaPlayer();
-        // TODO: Check for repeat
         alarm.deactivate();
         alarmAdapter.updateAlarm(alarm);
+
+        long nextAlarmTime = alarm.getNextAlarmTime();
+        if (nextAlarmTime > 0) {
+            setAlarm(nextAlarmTime);
+        }
+
         finish();
     }
 
+    private void setAlarm(long time) {
+        Intent alarmIntent = new Intent(this, AlarmReceiver.class);
+        alarmIntent.putExtra(AlarmReceiver.ALARM_ID, alarm.get_id());
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, (int) alarm.get_id(), alarmIntent, PendingIntent.FLAG_ONE_SHOT);
+
+        AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            manager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, time, pendingIntent);
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            manager.setExact(AlarmManager.RTC_WAKEUP, time, pendingIntent);
+        } else {
+            manager.set(AlarmManager.RTC_WAKEUP, time, pendingIntent);
+        }
+    }
+
     @Override
-    protected void onPause() {
-        super.onPause();
+    protected void onDestroy() {
+        super.onDestroy();
 
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
                 | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);

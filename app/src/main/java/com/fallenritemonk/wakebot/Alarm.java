@@ -155,7 +155,9 @@ public class Alarm implements Parcelable {
     }
 
     public void deactivate() {
-        active = false;
+        if (!sunday && !monday && !tuesday && !wednesday && !thursday && !friday && !saturday) {
+            active = false;
+        }
     }
 
     public void setRepeatDay(Day day, boolean value) {
