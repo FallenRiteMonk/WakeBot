@@ -15,6 +15,9 @@ import nl.qbusict.cupboard.annotation.Column;
 
 /**
  * Created by FallenRiteMonk on 18/03/16.
+ *
+ * Class representing a Alarm.
+ * Saved in database.
  */
 public class Alarm implements Parcelable {
     private final String LOG_TAG = "AlarmManagerActivity";
@@ -25,6 +28,7 @@ public class Alarm implements Parcelable {
     @Column("dismiss_type")
     private DismissTypeEnum dismissType;
     private boolean active;
+    @Column("alarm_tone_path")
     private String alarmTonePath;
     private boolean sunday;
     private boolean monday;
@@ -169,7 +173,6 @@ public class Alarm implements Parcelable {
             case FRIDAY: friday = value;
                 return;
             case SATURDAY: saturday = value;
-                return;
         }
     }
 

@@ -18,7 +18,7 @@
         android:layout_centerHorizontal="true"
         android:onClick="click" />
 
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <FrameLayout
         android:id="@+id/dismiss_fragment_container"
         android:layout_below="@+id/snooze_button"
         android:layout_width="match_parent"

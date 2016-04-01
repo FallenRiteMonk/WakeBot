@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.os.Build;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +23,8 @@ import static nl.qbusict.cupboard.CupboardFactory.cupboard;
 
 /**
  * Created by FallenRiteMonk on 18/03/16.
+ *
+ * Manages the list of all alarms and there view.
  */
 public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.AlarmViewHolder> {
     private final String LOG_TAG = "AlarmAdapter";
@@ -32,7 +35,8 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.AlarmViewHol
     private final ArrayList<Alarm> alarmList;
     private final SQLiteDatabase db;
 
-    private static OnItemClickListener listener;
+    private OnItemClickListener listener;
+
     public interface OnItemClickListener {
         void onItemClick(View itemView, int position);
     }
@@ -76,6 +80,7 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.AlarmViewHol
         notifyDataSetChanged();
     }
 
+    @SuppressWarnings("TryFinallyCanBeTryWithResources")
     public void loadAlarms() {
         alarmList.clear();
         Cursor alarms = cupboard().withDatabase(db).query(Alarm.class).getCursor();

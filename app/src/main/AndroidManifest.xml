@@ -27,7 +27,7 @@
 
         <receiver android:name=".utils.AlarmReceiver" />
 
-        <activity android:name=".EditAlarmActivity"></activity>
+        <activity android:name=".EditAlarmActivity"/>
     </application>
 
 </manifest>
