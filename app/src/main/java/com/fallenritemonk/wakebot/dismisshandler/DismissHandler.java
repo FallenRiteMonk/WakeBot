@@ -10,11 +10,13 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 
 import com.fallenritemonk.wakebot.Alarm;
 import com.fallenritemonk.wakebot.R;
+import com.fallenritemonk.wakebot.dismisshandler.fragments.QRHandler;
 import com.fallenritemonk.wakebot.dismisshandler.fragments.StandardHandler;
 import com.fallenritemonk.wakebot.utils.AlarmAdapter;
 import com.fallenritemonk.wakebot.utils.AlarmReceiver;
@@ -61,6 +63,9 @@ public class DismissHandler extends AppCompatActivity {
         if (alarm.getDismissType().equals(DismissTypeEnum.DEFAULT)) {
             StandardHandler firstFragment = new StandardHandler();
             getSupportFragmentManager().beginTransaction().add(R.id.dismiss_fragment_container, firstFragment).commit();
+        } else if (alarm.getDismissType().equals(DismissTypeEnum.QR_CODE)) {
+            QRHandler qrFragment = new QRHandler();
+            getSupportFragmentManager().beginTransaction().add(R.id.dismiss_fragment_container, qrFragment).commit();
         }
     }
 
@@ -82,8 +87,11 @@ public class DismissHandler extends AppCompatActivity {
     }
 
     private void stopMeadiaPlayer() {
-        mediaPlayer.stop();
-        mediaPlayer.release();
+        if (mediaPlayer != null) {
+            mediaPlayer.stop();
+            mediaPlayer.reset();
+            mediaPlayer.release();
+        }
     }
 
     public void click(View view) {

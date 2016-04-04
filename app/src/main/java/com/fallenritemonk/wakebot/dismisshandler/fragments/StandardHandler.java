@@ -14,6 +14,8 @@ import com.fallenritemonk.wakebot.dismisshandler.DismissHandler;
 public class StandardHandler extends Fragment {
     private final String LOG_TAG = "StandardHandlerFragment";
 
+    public StandardHandler() {}
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -22,7 +24,6 @@ public class StandardHandler extends Fragment {
         dismissButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(LOG_TAG, "dismiss");
                 ((DismissHandler) getActivity()).dismiss();
             }
         });
