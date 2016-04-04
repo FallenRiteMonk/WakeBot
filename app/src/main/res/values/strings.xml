@@ -5,11 +5,15 @@
     <string name="dismiss">Dismiss</string>
     <string name="time">Time</string>
     <string name="repeat">Repeat</string>
+    <string name="dismiss_type">Dismiss type</string>
     <string name="no_repeat">No Repeat</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
     <string name="delete">Delete</string>
     <string name="save">Save</string>
+
+    <string name="dismiss_type_default">Default</string>
+    <string name="dismiss_type_qr">QR Code</string>
 
     <string name="short_sunday">Su</string>
     <string name="short_monday">Mo</string>

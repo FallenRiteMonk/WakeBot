@@ -30,6 +30,7 @@ public class EditAlarmActivity extends AppCompatActivity {
 
     private TextView timeView;
     private TextView repeatView;
+    private TextView dismissTypeView;
 
     private boolean newAlarm;
     private Alarm alarm;
@@ -41,6 +42,7 @@ public class EditAlarmActivity extends AppCompatActivity {
 
         timeView = (TextView) findViewById(R.id.edit_time_view);
         repeatView = (TextView) findViewById(R.id.edit_repeat_view);
+        dismissTypeView = (TextView) findViewById(R.id.edit_dismiss_type_view);
 
         long id = getIntent().getLongExtra(PASSED_ALARM_ID, -1);
         alarm = AlarmAdapter.getInstance(this).getAlarm(id);
@@ -50,12 +52,13 @@ public class EditAlarmActivity extends AppCompatActivity {
             Calendar mCurrentTime = Calendar.getInstance();
             mCurrentTime.add(Calendar.MINUTE, 1);
 
-            alarm = new Alarm(mCurrentTime.get(Calendar.HOUR_OF_DAY), mCurrentTime.get(Calendar.MINUTE), DismissTypeEnum.QR_CODE);
+            alarm = new Alarm(mCurrentTime.get(Calendar.HOUR_OF_DAY), mCurrentTime.get(Calendar.MINUTE), DismissTypeEnum.DEFAULT);
             newAlarm = true;
         }
 
         timeView.setText(alarm.getReadableTime());
         repeatView.setText(alarm.getRepeatDayString(this));
+        dismissTypeView.setText(alarm.getDismissType().toString());
     }
 
     public void click(View view) {
@@ -63,6 +66,8 @@ public class EditAlarmActivity extends AppCompatActivity {
             editTime();
         } else if (view.getId() == R.id.edit_repeat_layout) {
             editRepeat();
+        } else if (view.getId() == R.id.edit_dismiss_type_layout) {
+            editDismissType();
         } else if (view.getId() == R.id.edit_delete_button) {
             deleteAlarm();
         } else if (view.getId() == R.id.edit_save_button) {
@@ -140,6 +145,29 @@ public class EditAlarmActivity extends AppCompatActivity {
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {}
         });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private void editDismissType() {
+        CharSequence[] typeList = {DismissTypeEnum.DEFAULT.toString(), DismissTypeEnum.QR_CODE.toString()};
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setTitle(getString(R.string.dismiss_type))
+                .setItems(typeList, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (which == 0) {
+                            alarm.setDismissType(DismissTypeEnum.DEFAULT);
+                        } else if (which == 1) {
+                            alarm.setDismissType(DismissTypeEnum.QR_CODE);
+                        }
+
+                        dismissTypeView.setText(alarm.getDismissType().toString());
+                    }
+                });
 
         AlertDialog dialog = builder.create();
         dialog.show();

@@ -6,6 +6,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
+import com.fallenritemonk.wakebot.dismisshandler.DismissHandler;
 import com.fallenritemonk.wakebot.dismisshandler.DismissTypeEnum;
 import com.fallenritemonk.wakebot.utils.Day;
 
@@ -148,6 +149,10 @@ public class Alarm implements Parcelable {
 
     public DismissTypeEnum getDismissType() {
         return dismissType;
+    }
+
+    public void setDismissType(DismissTypeEnum dismissType) {
+        this.dismissType = dismissType;
     }
 
     public String getAlarmPath() {
