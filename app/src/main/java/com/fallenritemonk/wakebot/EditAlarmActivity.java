@@ -58,7 +58,7 @@ public class EditAlarmActivity extends AppCompatActivity {
 
         timeView.setText(alarm.getReadableTime());
         repeatView.setText(alarm.getRepeatDayString(this));
-        dismissTypeView.setText(alarm.getDismissType().toString());
+        dismissTypeView.setText(alarm.getDismissType().getReadable());
     }
 
     public void click(View view) {
@@ -151,7 +151,7 @@ public class EditAlarmActivity extends AppCompatActivity {
     }
 
     private void editDismissType() {
-        CharSequence[] typeList = {DismissTypeEnum.DEFAULT.toString(), DismissTypeEnum.QR_CODE.toString()};
+        CharSequence[] typeList = {DismissTypeEnum.DEFAULT.getReadable(), DismissTypeEnum.QR_CODE.getReadable()};
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
@@ -165,7 +165,7 @@ public class EditAlarmActivity extends AppCompatActivity {
                             alarm.setDismissType(DismissTypeEnum.QR_CODE);
                         }
 
-                        dismissTypeView.setText(alarm.getDismissType().toString());
+                        dismissTypeView.setText(alarm.getDismissType().getReadable());
                     }
                 });
 

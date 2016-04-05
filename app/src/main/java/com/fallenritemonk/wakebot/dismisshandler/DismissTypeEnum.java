@@ -16,8 +16,7 @@ public enum DismissTypeEnum {
         resourceId = id;
     }
 
-    @Override
-    public String toString() {
+    public String getReadable() {
         return WakeBotApplication.getContext().getString(resourceId);
     }
 }
