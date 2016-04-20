@@ -8,7 +8,8 @@ import com.fallenritemonk.wakebot.WakeBotApplication;
  */
 public enum DismissTypeEnum {
     DEFAULT(R.string.dismiss_type_default),
-    QR_CODE(R.string.dismiss_type_qr);
+    QR_CODE(R.string.dismiss_type_qr),
+    AMBIENT_LIGHT(R.string.dismiss_type_ambient_light);
 
     private int resourceId;
 

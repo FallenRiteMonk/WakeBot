@@ -16,6 +16,7 @@ import android.view.WindowManager;
 
 import com.fallenritemonk.wakebot.Alarm;
 import com.fallenritemonk.wakebot.R;
+import com.fallenritemonk.wakebot.dismisshandler.fragments.AmbientLightHandler;
 import com.fallenritemonk.wakebot.dismisshandler.fragments.QRHandler;
 import com.fallenritemonk.wakebot.dismisshandler.fragments.StandardHandler;
 import com.fallenritemonk.wakebot.utils.AlarmAdapter;
@@ -66,6 +67,9 @@ public class DismissHandler extends AppCompatActivity {
         } else if (alarm.getDismissType().equals(DismissTypeEnum.QR_CODE)) {
             QRHandler qrFragment = new QRHandler();
             getSupportFragmentManager().beginTransaction().add(R.id.dismiss_fragment_container, qrFragment).commit();
+        } else if (alarm.getDismissType().equals(DismissTypeEnum.AMBIENT_LIGHT)) {
+            AmbientLightHandler ambientLightFragment = new AmbientLightHandler();
+            getSupportFragmentManager().beginTransaction().add(R.id.dismiss_fragment_container, ambientLightFragment).commit();
         }
     }
 

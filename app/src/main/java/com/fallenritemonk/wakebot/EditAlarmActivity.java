@@ -52,7 +52,7 @@ public class EditAlarmActivity extends AppCompatActivity {
             Calendar mCurrentTime = Calendar.getInstance();
             mCurrentTime.add(Calendar.MINUTE, 1);
 
-            alarm = new Alarm(mCurrentTime.get(Calendar.HOUR_OF_DAY), mCurrentTime.get(Calendar.MINUTE), DismissTypeEnum.DEFAULT);
+            alarm = new Alarm(mCurrentTime.get(Calendar.HOUR_OF_DAY), mCurrentTime.get(Calendar.MINUTE), DismissTypeEnum.AMBIENT_LIGHT);
             newAlarm = true;
         }
 
